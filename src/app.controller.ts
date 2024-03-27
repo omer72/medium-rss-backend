@@ -1,14 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-import { Observable } from 'rxjs/internal/Observable';
-import { AxiosResponse } from 'axios';
+import { Controller, Get, Param } from '@nestjs/common';
+import { AppService, rssItem } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get(':userId')
+  getHello(@Param() params: any): Promise<[rssItem]> {
+    return this.appService.getMediumRss(params.userId);
+  }
+
   @Get()
-  getHello(): Promise<Observable<AxiosResponse<any, any>>> {
-    return this.appService.getHello();
+  getValidAccounts(): string[] {
+    return this.appService.getValidAccounts();
   }
 }
